@@ -1,0 +1,48 @@
+// ═══════════════════════════════════════════════════════════════
+// FIRESTORE SECURITY RULES — firestore.rules
+// Firebase Console > Firestore > Rules এ পেস্ট করুন
+// ═══════════════════════════════════════════════════════════════
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // শুধুমাত্র লগইন করা ব্যবহারকারী সব ডেটা দেখতে ও যোগ করতে পারবেন
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if request.auth.uid == userId;
+    }
+
+    match /clients/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /schedules/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /dalils/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /namjaris/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /khatians/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /advances/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /khajnas/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
